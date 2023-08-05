@@ -1,54 +1,62 @@
-import { Context, SQSEvent, SQSRecord } from 'aws-lambda'
-import { ProcessMethod } from './EventProcessor'
+import { Context, SQSEvent, SQSRecord } from 'aws-lambda';
+import { ProcessMethod } from './EventProcessor';
 
-export type SqsEvent = SQSEvent
+export type SqsEvent = SQSEvent;
 
 export interface SqsRoute {
-  source: string | RegExp
-  action: (messages: SQSRecord['body'][], context: Context, records: SQSRecord[]) => Promise<any> | any
+    source: string | RegExp;
+    action: (messages: SQSRecord['body'][], context: Context, records: SQSRecord[]) => Promise<any> | any;
 }
 
 export interface SqsConfig {
-  routes: SqsRoute[];
-  debug?: boolean;
+    routes: SqsRoute[];
+    debug?: boolean;
 }
 
 export const process: ProcessMethod<SqsConfig, SqsEvent, Context, any> = (sqsConfig, event, context) => {
-  // detect if it's an sqs-event at all:
-  if (sqsConfig.debug) {
-    console.log('sqs:Event', JSON.stringify(event))
-    console.log('sqs:context', context)
-  }
-
-  if (!Array.isArray(event.Records) || event.Records.length < 1 || event.Records[0].eventSource !== 'aws:sqs') {
-    if(sqsConfig.debug) {
-      console.log('Event does not look like SQS')
+    // detect if it's an sqs-event at all:
+    if (sqsConfig.debug) {
+        console.log('sqs:Event', JSON.stringify(event));
+        console.log('sqs:context', context);
     }
-    return null
-  }
 
-  const records = event.Records
-  const recordSourceArn = records[0].eventSourceARN
-  for (const routeConfig of sqsConfig.routes) {
-    if (routeConfig.source instanceof RegExp) {
-      if (routeConfig.source.test(recordSourceArn)) {
-        const result = routeConfig.action(records.map(record => record.body), context, records)
-        return result || {}
-      }
-    } else {
-      if (routeConfig.source === recordSourceArn) {
-        const result = routeConfig.action(records.map(record => record.body), context, records)
-        return result || {}
-      }
+    if (!Array.isArray(event.Records) || event.Records.length < 1 || event.Records[0].eventSource !== 'aws:sqs') {
+        if (sqsConfig.debug) {
+            console.log('Event does not look like SQS');
+        }
+        return null;
     }
-  }
 
-  if (sqsConfig.debug) {
-    console.log(`No source-match for ${recordSourceArn}`)
-  }
+    const records = event.Records;
+    const recordSourceArn = records[0].eventSourceARN;
+    for (const routeConfig of sqsConfig.routes) {
+        if (routeConfig.source instanceof RegExp) {
+            if (routeConfig.source.test(recordSourceArn)) {
+                const result = routeConfig.action(
+                    records.map(record => record.body),
+                    context,
+                    records,
+                );
+                return result || {};
+            }
+        } else {
+            if (routeConfig.source === recordSourceArn) {
+                const result = routeConfig.action(
+                    records.map(record => record.body),
+                    context,
+                    records,
+                );
+                return result || {};
+            }
+        }
+    }
 
-  return null
-}
+    if (sqsConfig.debug) {
+        console.log(`No source-match for ${recordSourceArn}`);
+    }
+
+    return null;
+};
 
 /*
 const cfgExample = {
@@ -60,7 +68,6 @@ const cfgExample = {
     ]
 };
 */
-
 
 /* this is an example for a standard SQS notification message:
 

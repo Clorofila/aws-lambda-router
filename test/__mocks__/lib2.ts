@@ -1,1 +1,1 @@
-export const process = () => (global as any).libMock.lib2()
+export const process = () => (global as any).libMock.lib2();
