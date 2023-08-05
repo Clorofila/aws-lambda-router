@@ -1,5 +1,5 @@
 // helper for parameterized tests (http://blog.piotrturski.net/2015/04/jasmine-parameterized-tests.html)
-import { ProxyIntegrationConfig, process as proxyIntegration } from '../lib/proxyIntegration';
+import { LegacyProxyIntegrationConfig, process as proxyIntegration } from '../lib/legacyProxyIntegration';
 
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { HttpMethod } from '../lib/EventProcessor';
@@ -386,7 +386,7 @@ describe('proxyIntegration.routeHandler', () => {
         ['POST', '/abc'],
         ['PUT', '/abc/def/ghi'],
     ]).it('should call action for on method/staticPath', async (method: HttpMethod, path: string) => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [{ method, path, action: () => ({ foo: 'bar' }) as any }],
         };
         const result = await proxyIntegration(
@@ -415,7 +415,7 @@ describe('proxyIntegration.routeHandler', () => {
         ['/{param1}/abc/def/:param2', '/p1/abc/def/p2', { param1: 'p1', param2: 'p2' }],
     ]).it('should call action with path params for method/path', async (pathConfig, path, expectedPathValues) => {
         const spiedAction = jasmine.createSpy('action').and.returnValue({ foo: 'bar' });
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -432,7 +432,7 @@ describe('proxyIntegration.routeHandler', () => {
     });
 
     it('should return default headers', async () => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             defaultHeaders: { a: '1', b: '2' },
             routes: [
                 {
@@ -458,7 +458,7 @@ describe('proxyIntegration.routeHandler', () => {
     });
 
     it('should return default headers to OPTIONS request without content-type', async () => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             defaultHeaders: { a: '1', b: '2' },
             routes: [
                 {
@@ -484,7 +484,7 @@ describe('proxyIntegration.routeHandler', () => {
     });
 
     it('should return error headers', async () => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -509,7 +509,7 @@ describe('proxyIntegration.routeHandler', () => {
     });
 
     it('should return error including CORS header', async () => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             cors: true,
             routes: [
                 {
@@ -538,7 +538,7 @@ describe('proxyIntegration.routeHandler', () => {
     });
     it('should modify incorrect error', async () => {
         const incorrectError = { body: { reason: 'oops' } };
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -566,7 +566,7 @@ describe('proxyIntegration.routeHandler', () => {
 
     it('should pass through error statuscode', async () => {
         const statusCodeError = { statusCode: 666, message: { reason: 'oops' } };
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -596,7 +596,7 @@ describe('proxyIntegration.routeHandler', () => {
 describe('proxyIntegration.proxyPath', () => {
     it('single proxy path', async () => {
         const spiedAction = jasmine.createSpy('action').and.returnValue({});
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             proxyPath: 'apiPath',
             routes: [
                 {
@@ -639,7 +639,7 @@ describe('proxyIntegration.proxyPath', () => {
     it('multiple proxy path', async () => {
         const articleAction = jasmine.createSpy('action').and.returnValue({});
         const sectionAction = jasmine.createSpy('action').and.returnValue({});
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             proxyPath: 'apiPath',
             routes: [
                 {
@@ -711,7 +711,7 @@ describe('proxyIntegration.routeHandler.returnvalues', () => {
             body: JSON.stringify({ foo: 'bar' }),
         };
 
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [{ method: 'GET', path: '/', action: () => Promise.resolve(customBody) }],
         };
         const result = await proxyIntegration(
@@ -744,7 +744,7 @@ describe('proxyIntegration.routeHandler.returnvalues', () => {
         [1234, '1234'],
         [undefined, '{}'],
     ]).it('should return async result', async (returnValue, expectedBody) => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [{ method: 'GET', path: '/', action: () => Promise.resolve(returnValue) }],
         };
         const result = await proxyIntegration(
@@ -763,7 +763,7 @@ describe('proxyIntegration.routeHandler.returnvalues', () => {
     });
 
     it('should return async error', async () => {
-        const routeConfig: ProxyIntegrationConfig = {
+        const routeConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -825,7 +825,7 @@ const assertPathIsUnchanged = async (hostname: string) => {
 
 describe('proxyIntegration.onError', () => {
     it('should allow Promised proxyresult', async () => {
-        const proxyConfig: ProxyIntegrationConfig = {
+        const proxyConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -862,7 +862,7 @@ describe('proxyIntegration.onError', () => {
     });
     it('should allow Promised void', async () => {
         const sectionOnError = jasmine.createSpy('onError');
-        const proxyConfig: ProxyIntegrationConfig = {
+        const proxyConfig: LegacyProxyIntegrationConfig = {
             routes: [
                 {
                     method: 'GET',
@@ -894,7 +894,7 @@ describe('proxyIntegration.onError', () => {
     it('should return cors headers', async () => {
         const errorBody = JSON.stringify({ error: 'Error', message: 'Test Error' });
 
-        const proxyConfig: ProxyIntegrationConfig = {
+        const proxyConfig: LegacyProxyIntegrationConfig = {
             cors: true,
             routes: [
                 {

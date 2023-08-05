@@ -1,7 +1,7 @@
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 import { HttpMethod, ProcessMethod } from './EventProcessor';
-import { addCorsHeaders, CorsOptions } from './cors';
+import { addCorsHeaders, CorsOptions } from './legacyCors';
 
 type ProxyIntegrationParams = {
     paths?: { [paramId: string]: string };
@@ -17,7 +17,7 @@ type ErrorHandler = (
     request?: APIGatewayProxyEvent,
     context?: APIGatewayEventRequestContext,
 ) => Promise<APIGatewayProxyResult | void> | APIGatewayProxyResult | void;
-export type ProxyIntegrationEvent<T = unknown> = Omit<APIGatewayProxyEvent, 'body'> &
+export type LegacyProxyIntegrationEvent<T = unknown> = Omit<APIGatewayProxyEvent, 'body'> &
     ProxyIntegrationParams &
     ProxyIntegrationBody<T>;
 export type ProxyIntegrationResult = Omit<APIGatewayProxyResult, 'statusCode'> & {
@@ -28,7 +28,7 @@ export interface ProxyIntegrationRoute {
     path: string;
     method: HttpMethod;
     action: (
-        request: ProxyIntegrationEvent<unknown>,
+        request: LegacyProxyIntegrationEvent<unknown>,
         context: APIGatewayEventRequestContext,
     ) => ProxyIntegrationResult | Promise<ProxyIntegrationResult> | string | Promise<string>;
 }
@@ -47,7 +47,7 @@ export type ProxyIntegrationError =
           message: string;
       };
 
-export interface ProxyIntegrationConfig {
+export interface LegacyProxyIntegrationConfig {
     onError?: ErrorHandler;
     cors?: CorsOptions | boolean;
     routes: ProxyIntegrationRoute[];
@@ -58,7 +58,7 @@ export interface ProxyIntegrationConfig {
     proxyPath?: string;
 }
 
-const NO_MATCHING_ACTION = (request: ProxyIntegrationEvent) => {
+const NO_MATCHING_ACTION = (request: LegacyProxyIntegrationEvent) => {
     throw {
         reason: 'NO_MATCHING_ACTION',
         message: `Could not find matching action for ${request.path} and method ${request.httpMethod}`,
@@ -67,7 +67,7 @@ const NO_MATCHING_ACTION = (request: ProxyIntegrationEvent) => {
 
 const processActionAndReturn = async (
     actionConfig: Pick<ProxyIntegrationRoute, 'action'>,
-    event: ProxyIntegrationEvent,
+    event: LegacyProxyIntegrationEvent,
     context: APIGatewayEventRequestContext,
     headers: APIGatewayProxyResult['headers'],
 ) => {
@@ -91,7 +91,7 @@ const processActionAndReturn = async (
 };
 
 export const process: ProcessMethod<
-    ProxyIntegrationConfig,
+    LegacyProxyIntegrationConfig,
     APIGatewayProxyEvent,
     APIGatewayEventRequestContext,
     APIGatewayProxyResult
@@ -149,7 +149,7 @@ export const process: ProcessMethod<
             paths: undefined,
         };
 
-        const proxyEvent: ProxyIntegrationEvent = event;
+        const proxyEvent: LegacyProxyIntegrationEvent = event;
 
         proxyEvent.paths = actionConfig.paths;
         proxyEvent.routePath = actionConfig.routePath;
@@ -254,7 +254,7 @@ const convertError = (
 const findMatchingActionConfig = (
     httpMethod: HttpMethod,
     httpPath: string,
-    routeConfig: ProxyIntegrationConfig,
+    routeConfig: LegacyProxyIntegrationConfig,
 ): (ProxyIntegrationRoute & ProxyIntegrationParams) | null => {
     const paths: ProxyIntegrationParams['paths'] = {};
     const matchingMethodRoutes = routeConfig.routes.filter(route => route.method === httpMethod);
@@ -299,7 +299,7 @@ const extractPathNames = (pathExpression: string) => {
     return pathNames && pathNames.length > 0 ? pathNames.slice(1) : null;
 };
 
-const isLocalExecution = (event: ProxyIntegrationEvent) => {
+const isLocalExecution = (event: LegacyProxyIntegrationEvent) => {
     return (
         event.headers &&
         event.headers.Host &&
