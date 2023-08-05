@@ -1,4 +1,5 @@
 import { LegacyProxyIntegrationConfig, LegacyProxyIntegrationEvent } from './lib/legacyProxyIntegration';
+import { ProxyIntegrationConfig, ProxyIntegrationEvent } from './lib/proxyIntegration';
 import { SnsConfig, SnsEvent } from './lib/sns';
 import { SqsConfig, SqsEvent } from './lib/sqs';
 import { S3Config, S3Event } from './lib/s3';
@@ -7,6 +8,7 @@ import { EventProcessor } from './lib/EventProcessor';
 
 export interface RouteConfig {
     legacyProxyIntegration?: LegacyProxyIntegrationConfig;
+    proxyIntegration?: ProxyIntegrationConfig;
     sns?: SnsConfig;
     sqs?: SqsConfig;
     s3?: S3Config;
@@ -20,7 +22,7 @@ export type ErrorHandler<TContext extends Context = Context> = (
     context?: TContext,
 ) => Promise<any> | any | void;
 
-export type RouterEvent = LegacyProxyIntegrationEvent | SnsEvent | SqsEvent | S3Event;
+export type RouterEvent = LegacyProxyIntegrationEvent | ProxyIntegrationEvent | SnsEvent | SqsEvent | S3Event;
 
 export const handler = (routeConfig: RouteConfig) => {
     const eventProcessorMapping = extractEventProcessorMapping(routeConfig);
