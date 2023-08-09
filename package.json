@@ -2,11 +2,9 @@
   "name": "aws-lambda-router",
   "version": "0.12.0",
   "description": "AWS lambda router",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist/index.*", "dist/**/*"],
   "scripts": {
     "test": "yarn clean && jest --coverage",
     "build": "rimraf .dist/ && tsc"
