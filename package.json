@@ -4,6 +4,7 @@
   "description": "AWS lambda router",
   "main": "index.js",
   "types": "index.d.ts",
+  "files": ["dist/**/*"],
   "scripts": {
     "test": "yarn clean && jest --coverage",
     "build": "tsc",
