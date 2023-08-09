@@ -1,5 +1,11 @@
 ### not released yet ()
 
+### 0.12.1 (Aug 08, 2023)
+
+-   Changed location of compiled files
+-   Updated npm scripts
+-   Updated package json to use new location of compiled files
+
 ### 0.12.0 (Aug 04, 2023)
 
 -   Forked project
