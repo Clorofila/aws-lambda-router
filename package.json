@@ -8,8 +8,9 @@
     "dist/**"
   ],
   "scripts": {
-    "test": "yarn clean && jest --coverage",
-    "build": "rimraf .dist/ && tsc"
+    "clean": "rimraf .dist/",
+    "build": "yarn clean && tsc",
+    "test": "yarn clean && jest --coverage"
   },
   "repository": {
     "type": "git",
