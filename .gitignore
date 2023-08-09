@@ -2,7 +2,3 @@ node_modules
 coverage
 .idea
 *.iml
-lib/*.d.ts
-lib/*.js
-index.js
-index.d.ts
