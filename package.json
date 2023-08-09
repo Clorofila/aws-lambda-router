@@ -4,11 +4,12 @@
   "description": "AWS lambda router",
   "main": "index.js",
   "types": "index.d.ts",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "test": "yarn clean && jest --coverage",
-    "build": "tsc",
-    "clean": "rm -f lib/*.d.ts lib/*.js index.js index.d.ts"
+    "build": "rimraf .dist/ && tsc"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "codecov": "3.8.2",
     "jest": "26.6.3",
     "prettier": "^3.0.1",
+    "rimraf": "^5.0.1",
     "ts-jest": "26.5.6",
     "typescript": "4.2.4"
   },
