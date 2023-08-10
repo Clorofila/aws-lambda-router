@@ -51,17 +51,19 @@ export const handler = (routeConfig: RouteConfig) => {
                         console.log("Event processor couldn't handle request.");
                     }
                 }
-            } catch (error) {
-                if (error.stack) {
-                    console.log(error.stack);
-                }
-                if (routeConfig.onError) {
-                    const result = await routeConfig.onError(error, event, context);
-                    if (result) {
-                        return result;
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    if (error.stack) {
+                        console.log(error.stack);
                     }
+                    if (routeConfig.onError) {
+                        const result = await routeConfig.onError(error, event, context);
+                        if (result) {
+                            return result;
+                        }
+                    }
+                    throw error.toString();
                 }
-                throw error.toString();
             }
         }
         throw 'No event processor found to handle this kind of event!';
@@ -76,9 +78,11 @@ const extractEventProcessorMapping = (routeConfig: RouteConfig) => {
         }
         try {
             processorMap.set(key, require(`./lib/${key}`));
-        } catch (error) {
+        } catch (error: unknown) {
             throw new Error(
-                `The event processor '${key}', that is mentioned in the routerConfig, cannot be instantiated (${error.toString()})`,
+                `The event processor '${key}', that is mentioned in the routerConfig, cannot be instantiated (${(
+                    error as Error
+                ).toString()})`,
             );
         }
     }

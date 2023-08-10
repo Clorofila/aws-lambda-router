@@ -117,7 +117,7 @@ export const process: ProcessMethod<
         : {};
 
     if (event.requestContext.http.method === 'OPTIONS') {
-        Object.assign(headers, proxyIntegrationConfig.defaultHeaders);
+        Object.assign(headers ?? {}, proxyIntegrationConfig.defaultHeaders);
         return Promise.resolve({
             statusCode: 200,
             headers,
@@ -125,7 +125,7 @@ export const process: ProcessMethod<
         });
     }
 
-    Object.assign(headers, { 'Content-Type': 'application/json' }, proxyIntegrationConfig.defaultHeaders);
+    Object.assign(headers ?? {}, { 'Content-Type': 'application/json' }, proxyIntegrationConfig.defaultHeaders);
 
     // assure necessary values have sane defaults:
     const errorMapping = proxyIntegrationConfig.errorMapping || {};
@@ -187,17 +187,17 @@ export const process: ProcessMethod<
         console.log('Error while evaluating matching action handler', error);
 
         if (proxyIntegrationConfig.onError) {
-            const promise = proxyIntegrationConfig.onError(error, event, context);
+            const promise = proxyIntegrationConfig.onError(error as Error, event, context);
             Promise.resolve(promise).then(result => {
                 if (result != undefined) {
                     return { headers, ...result };
                 }
 
-                return convertError(error, errorMapping, headers);
+                return convertError(error as Error, errorMapping, headers);
             });
         }
 
-        return convertError(error, errorMapping, headers);
+        return convertError(error as Error, errorMapping, headers);
     }
 };
 
