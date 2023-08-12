@@ -1,12 +1,10 @@
 {
-  "name": "aws-lambda-router",
+  "name": "@clorofila/aws-lambda-router",
   "version": "0.12.2",
   "description": "AWS lambda router",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
+  "files": ["dist", "LICENSE", "README.md", "package.json"],
   "scripts": {
     "clean": "rimraf .dist/",
     "build": "yarn clean && tsc",
@@ -14,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spring-media/aws-lambda-router.git"
+    "url": "git+https://github.com/Clorofila/aws-lambda-router"
   },
   "keywords": [
     "aws",
@@ -26,12 +24,11 @@
     "routing",
     "s3"
   ],
-  "author": "Christian Gohlke <christian.gohlke@axelspringer.com> (https://www.welt.de)",
+  "author": "Jorge Zapata <contacto@jazg.net> (http://jazg.net)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/spring-media/aws-lambda-router/issues"
+    "url": "https://github.com/Clorofila/aws-lambda-router/issues"
   },
-  "homepage": "https://github.com/spring-media/aws-lambda-router#readme",
   "devDependencies": {
     "@types/jest": "26.0.23",
     "@types/node": "^8.10.59",
