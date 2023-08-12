@@ -1,6 +1,6 @@
 {
   "name": "@clorofila/aws-lambda-router",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "AWS lambda router",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
