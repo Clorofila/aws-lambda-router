@@ -1,5 +1,9 @@
 ### not released yet ()
 
+### 0.13.0 (Aug 11, 2023)
+
+-   Prepare package for publishing on npm
+
 ### 0.12.2 (Aug 11, 2023)
 
 -   Migrated from travis to github actions
