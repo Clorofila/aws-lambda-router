@@ -28,7 +28,7 @@ export interface ProxyIntegrationRoute {
     path: string;
     method: HttpMethod;
     action: (
-        request: ProxyIntegrationEvent<unknown>,
+        request: ProxyIntegrationEvent<any>,
         context: APIGatewayEventRequestContext,
     ) => ProxyIntegrationResult | Promise<ProxyIntegrationResult> | string | Promise<string>;
 }
