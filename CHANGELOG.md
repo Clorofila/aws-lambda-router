@@ -1,5 +1,9 @@
 ### not released yet ()
 
+### 0.13.1 (Aug 11, 2023)
+
+-   Publish package using Github actions
+
 ### 0.13.0 (Aug 11, 2023)
 
 -   Prepare package for publishing on npm
