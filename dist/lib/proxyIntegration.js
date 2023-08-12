@@ -37,14 +37,14 @@ const process = (proxyIntegrationConfig, event, context) => {
         ? cors_1.addCorsHeaders(proxyIntegrationConfig.cors, event)
         : {};
     if (event.requestContext.http.method === 'OPTIONS') {
-        Object.assign(headers, proxyIntegrationConfig.defaultHeaders);
+        Object.assign(headers !== null && headers !== void 0 ? headers : {}, proxyIntegrationConfig.defaultHeaders);
         return Promise.resolve({
             statusCode: 200,
             headers,
             body: '',
         });
     }
-    Object.assign(headers, { 'Content-Type': 'application/json' }, proxyIntegrationConfig.defaultHeaders);
+    Object.assign(headers !== null && headers !== void 0 ? headers : {}, { 'Content-Type': 'application/json' }, proxyIntegrationConfig.defaultHeaders);
     // assure necessary values have sane defaults:
     const errorMapping = proxyIntegrationConfig.errorMapping || {};
     errorMapping['NO_MATCHING_ACTION'] = 404;

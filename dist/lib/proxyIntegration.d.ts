@@ -18,7 +18,7 @@ export declare type ProxyIntegrationResult = Omit<APIGatewayProxyStructuredResul
 export interface ProxyIntegrationRoute {
     path: string;
     method: HttpMethod;
-    action: (request: ProxyIntegrationEvent<unknown>, context: APIGatewayEventRequestContext) => ProxyIntegrationResult | Promise<ProxyIntegrationResult> | string | Promise<string>;
+    action: (request: ProxyIntegrationEvent<any>, context: APIGatewayEventRequestContext) => ProxyIntegrationResult | Promise<ProxyIntegrationResult> | string | Promise<string>;
 }
 export declare type ProxyIntegrationErrorMapping = {
     [reason: string]: APIGatewayProxyStructuredResultV2['statusCode'];

@@ -29,16 +29,18 @@ const handler = (routeConfig) => {
                 }
             }
             catch (error) {
-                if (error.stack) {
-                    console.log(error.stack);
-                }
-                if (routeConfig.onError) {
-                    const result = await routeConfig.onError(error, event, context);
-                    if (result) {
-                        return result;
+                if (error instanceof Error) {
+                    if (error.stack) {
+                        console.log(error.stack);
                     }
+                    if (routeConfig.onError) {
+                        const result = await routeConfig.onError(error, event, context);
+                        if (result) {
+                            return result;
+                        }
+                    }
+                    throw error.toString();
                 }
-                throw error.toString();
             }
         }
         throw 'No event processor found to handle this kind of event!';
