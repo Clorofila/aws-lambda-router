@@ -1,5 +1,11 @@
 ### not released yet ()
 
+### 0.12.2 (Aug 11, 2023)
+
+-   Migrated from travis to github actions
+-   Re-added clean script
+-   Updated package codecov test dependency
+
 ### 0.12.1 (Aug 08, 2023)
 
 -   Changed location of compiled files
