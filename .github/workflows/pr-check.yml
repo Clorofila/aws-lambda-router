@@ -1,0 +1,20 @@
+name: PR check
+
+on: [pull_request]
+
+jobs:
+  pr_check:
+    name: Continuous integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Installing dependencies
+        run: yarn install
+      - name: Testing project
+        run: yarn test
