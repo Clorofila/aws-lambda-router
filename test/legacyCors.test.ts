@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
 describe('CORS', () => {
     it('should return an empty headers object when cors option is set to false', () => {
         const headers = addCorsHeaders(false, {} as APIGatewayProxyEvent);
-        expect(headers).toEqual({ foo: 'bar' });
+        expect(headers).toEqual({});
     });
 
     it('should return the default headers when cors options is set to true', () => {
