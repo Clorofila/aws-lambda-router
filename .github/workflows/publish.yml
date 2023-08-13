@@ -1,4 +1,4 @@
-name: Publish release
+name: CI/CD Publish release
 
 on:
   release:
@@ -6,7 +6,7 @@ on:
     
 jobs:
   publish_release:
-    name: Continuous integration package publish
+    name: Package publish
     runs-on: ubuntu-latest
 
     steps:

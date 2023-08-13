@@ -1,10 +1,10 @@
-name: PR check
+name: CI/CD PR check
 
 on: [pull_request]
 
 jobs:
   pr_check:
-    name: Continuous integration
+    name: PR status check
     runs-on: ubuntu-latest
 
     steps:
