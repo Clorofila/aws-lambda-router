@@ -1,4 +1,4 @@
-# AWS Lambda Router ![Build Status](https://github.com/Clorofila/aws-lambda-router/actions/workflows/health-check.yml/badge.svg)
+# AWS Lambda Router ![Build Status](https://github.com/Clorofila/aws-lambda-router/actions/workflows/publish.yml/badge.svg)
 
 [![npm version](https://badge.fury.io/js/@clorofila%2Faws-lambda-router.svg)](https://badge.fury.io/js/@clorofila%2Faws-lambda-router)
 

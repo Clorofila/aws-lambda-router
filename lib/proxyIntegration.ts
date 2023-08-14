@@ -9,7 +9,7 @@ type ProxyIntegrationParams = {
 };
 
 type ProxyIntegrationBody<T = unknown> = {
-    body?: T;
+    body: T;
 };
 
 type ErrorHandler = (
@@ -153,7 +153,7 @@ export const process: ProcessMethod<
             paths: undefined,
         };
 
-        const proxyEvent: ProxyIntegrationEvent = event;
+        const proxyEvent: ProxyIntegrationEvent = event as ProxyIntegrationEvent;
 
         proxyEvent.paths = actionConfig.paths;
         proxyEvent.routePath = actionConfig.routePath;
