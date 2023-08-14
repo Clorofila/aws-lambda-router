@@ -1,5 +1,11 @@
 ### not released yet ()
 
+### 0.13.4 (Aug 13, 2023)
+
+-   Updated readme file with new badges.
+-   Improved workflows descriptions.
+-   Made proxyevent body non-optional
+
 ### 0.13.1 (Aug 11, 2023)
 
 -   Publish package using Github actions
